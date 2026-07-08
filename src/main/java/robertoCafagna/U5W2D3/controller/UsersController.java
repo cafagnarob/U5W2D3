@@ -54,8 +54,4 @@ public class UsersController {
     }
 
 
-    @GetMapping("/test")
-    public String test() {
-        return "CIAO";
-    }
 }
