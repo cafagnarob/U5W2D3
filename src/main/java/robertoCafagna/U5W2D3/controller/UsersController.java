@@ -18,7 +18,7 @@ public class UsersController {
         this.usersService = usersService;
     }
 
-    // 1. GET http://localhost:3001/users --> 200 OK    ARRAY DI UTENTI
+    // 1. GET http://localhost:3001/users?page=2&size=10&orderBy=nome --> 200 OK    ARRAY DI UTENTI
     @GetMapping
     public Page<User> getUsers(@RequestParam(defaultValue = "0") int page,
                                @RequestParam(defaultValue = "5") int size,
@@ -51,5 +51,11 @@ public class UsersController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void findByIdAndDelete(@PathVariable long userId) {
         this.usersService.findByIdAndDelete(userId);
+    }
+
+
+    @GetMapping("/test")
+    public String test() {
+        return "CIAO";
     }
 }
