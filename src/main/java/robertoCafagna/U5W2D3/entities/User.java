@@ -17,9 +17,10 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
+    @Setter
     @Column(nullable = false)
     private String nome;
+    @Setter
 
     @Column(nullable = false)
     private String cognome;
@@ -28,8 +29,10 @@ public class User {
     @Setter
     private String email;
 
+    @Setter
     @Column(nullable = false)
     private LocalDate dataDiNascita;
+
 
     @Column(nullable = false)
     @Setter

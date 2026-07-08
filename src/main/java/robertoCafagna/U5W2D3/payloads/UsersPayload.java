@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Getter
 @AllArgsConstructor
 @ToString
-public class UserPayload {
+public class UsersPayload {
     private String nome;
     private String cognome;
     private String email;
