@@ -36,17 +36,17 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User userId;
+    private User user;
 
 
-    public Post(String categoria, String titolo, String contenuto, Integer minutiDiLettura, User userId) {
+    public Post(String categoria, String titolo, String contenuto, Integer minutiDiLettura, User user) {
 
         this.categoria = categoria;
         this.titolo = titolo;
         this.cover = "https://picsum.photos/200/300";
         this.contenuto = contenuto;
         this.minutiDiLettura = minutiDiLettura;
-        this.userId = userId;
+        this.user = user;
     }
 
 

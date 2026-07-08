@@ -6,19 +6,25 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import robertoCafagna.U5W2D3.entities.Post;
 import robertoCafagna.U5W2D3.entities.User;
 import robertoCafagna.U5W2D3.exceptions.BadRequestException;
 import robertoCafagna.U5W2D3.exceptions.NotFoundException;
 import robertoCafagna.U5W2D3.payloads.UsersPayload;
+import robertoCafagna.U5W2D3.repositories.PostsRepository;
 import robertoCafagna.U5W2D3.repositories.UsersRepository;
+
+import java.util.List;
 
 @Service
 @Slf4j
 public class UsersService {
     private final UsersRepository usersRepository;
+    private final PostsRepository postsRepository;
 
-    public UsersService(UsersRepository usersRepository) {
+    public UsersService(UsersRepository usersRepository, PostsRepository postsRepository) {
         this.usersRepository = usersRepository;
+        this.postsRepository = postsRepository;
     }
 
     public User save(UsersPayload body) {
@@ -68,6 +74,10 @@ public class UsersService {
     public void findByIdAndDelete(Long userId) {
         User found = this.findById(userId);
         this.usersRepository.delete(found);
+    }
+
+    public List<Post> getPostsByUser(Long userId) {
+        return postsRepository.findByUser_Id(userId);
     }
 
 

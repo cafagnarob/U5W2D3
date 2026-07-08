@@ -1,5 +1,6 @@
 package robertoCafagna.U5W2D3.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,6 +8,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -37,6 +40,11 @@ public class User {
     @Column(nullable = false)
     @Setter
     private String avatar;
+
+    @OneToMany(mappedBy = "user")
+    @ToString.Exclude
+    @JsonIgnore
+    private List<Post> posts = new ArrayList<>();
 
 
     public User(String nome, String cognome, String email, LocalDate dataDiNascita) {

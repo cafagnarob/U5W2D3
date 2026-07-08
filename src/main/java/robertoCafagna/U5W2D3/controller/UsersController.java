@@ -4,10 +4,13 @@ package robertoCafagna.U5W2D3.controller;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import robertoCafagna.U5W2D3.entities.Post;
 import robertoCafagna.U5W2D3.entities.User;
 import robertoCafagna.U5W2D3.payloads.UserResponsePayload;
 import robertoCafagna.U5W2D3.payloads.UsersPayload;
 import robertoCafagna.U5W2D3.services.UsersService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -53,5 +56,11 @@ public class UsersController {
         this.usersService.findByIdAndDelete(userId);
     }
 
+
+    //6. GET http://localhost:3001/users/{userId}/posts --> 200 OK  POST TROVATO
+    @GetMapping("/{userId}/posts")
+    public List<Post> getUserPosts(@PathVariable Long userId) {
+        return usersService.getPostsByUser(userId);
+    }
 
 }
