@@ -8,3 +8,4 @@ import robertoCafagna.U5W2D3.entities.User;
 public interface UsersRepository extends JpaRepository<User, Long> {
     boolean existsByEmail(String email);
 }
+

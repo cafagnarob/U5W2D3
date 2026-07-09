@@ -1,16 +1,21 @@
 package robertoCafagna.U5W2D3.controller;
 
 
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import robertoCafagna.U5W2D3.entities.Post;
 import robertoCafagna.U5W2D3.entities.User;
+import robertoCafagna.U5W2D3.exceptions.ValidationException;
 import robertoCafagna.U5W2D3.payloads.UserResponsePayload;
-import robertoCafagna.U5W2D3.payloads.UsersPayload;
+import robertoCafagna.U5W2D3.payloads.UsersDTO;
 import robertoCafagna.U5W2D3.services.UsersService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/users")
@@ -32,7 +37,14 @@ public class UsersController {
     // 2. POST http://locahost:3001/users (+req.body) --> 201 CREATED    ID UTENTE APPENA CREATO
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED) // 201
-    public UserResponsePayload saveUser(@RequestBody UsersPayload body) {
+    public UserResponsePayload saveUser(@Valid @RequestBody UsersDTO body, BindingResult validationResult) {
+        if (validationResult.hasErrors()) {
+            String errors = validationResult.getFieldErrors().stream()
+                    .map(fieldError -> fieldError.getDefaultMessage())
+                    .collect(Collectors.joining(". "));
+
+            throw new ValidationException(errors);
+        }
         User saved = this.usersService.save(body);
         return new UserResponsePayload(saved.getId());
     }
@@ -45,7 +57,14 @@ public class UsersController {
 
     // 4. PUT http://localhost:3001/users/{userId} (+payload) --> 200 OK  UTENTE AGGIORNATO
     @PutMapping("/{userId}")
-    public User findByIdAndUpdate(@PathVariable long userId, @RequestBody UsersPayload body) {
+    public User findByIdAndUpdate(@PathVariable long userId, @Valid @RequestBody UsersDTO body, BindingResult validationResult) {
+        if (validationResult.hasErrors()) {
+            String errors = validationResult.getFieldErrors().stream()
+                    .map(fieldError -> fieldError.getDefaultMessage())
+                    .collect(Collectors.joining(". "));
+
+            throw new ValidationException(errors);
+        }
         return this.usersService.findByIdAndUpdate(userId, body);
     }
 
@@ -62,5 +81,13 @@ public class UsersController {
     public List<Post> getUserPosts(@PathVariable Long userId) {
         return usersService.getPostsByUser(userId);
     }
+
+    //7. PATCH PICTURE http://localhost:3001/posts/{userId}/avatar (+payload) --> 204
+    @PatchMapping("/{userId}/avatar")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void UpdateCover(@PathVariable Long userId, @RequestParam("profile_picture") MultipartFile file) {
+        this.usersService.updatePic(userId, file);
+    }
+
 
 }

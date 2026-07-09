@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import robertoCafagna.U5W2D3.payloads.ErrorsPayload;
+import robertoCafagna.U5W2D3.payloads.ErrorsDTO;
 
 import java.time.LocalDateTime;
 
@@ -13,22 +13,28 @@ public class ErrorHandler {
 
     @ExceptionHandler(BadRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorsPayload handleBadRequest(BadRequestException ex) {
-        return new ErrorsPayload(ex.getMessage(), LocalDateTime.now());
+    public ErrorsDTO handleBadRequest(BadRequestException ex) {
+        return new ErrorsDTO(ex.getMessage(), LocalDateTime.now());
     }
 
 
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorsPayload handleNotFound(NotFoundException ex) {
-        return new ErrorsPayload(ex.getMessage(), LocalDateTime.now());
+    public ErrorsDTO handleNotFound(NotFoundException ex) {
+        return new ErrorsDTO(ex.getMessage(), LocalDateTime.now());
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST) // 400
+    public ErrorsDTO handleValidation(ValidationException ex) {
+        return new ErrorsDTO(ex.getMessage(), LocalDateTime.now());
     }
 
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorsPayload handleGenericException(Exception ex) {
+    public ErrorsDTO handleGenericException(Exception ex) {
         ex.printStackTrace();
-        return new ErrorsPayload("ERRORE INTERNO, CONTATTARE IL BACKEND", LocalDateTime.now());
+        return new ErrorsDTO("ERRORE INTERNO, CONTATTARE IL BACKEND", LocalDateTime.now());
     }
 }
